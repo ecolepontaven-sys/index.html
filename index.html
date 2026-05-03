@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Croquis en Balade — Dessinez Pont-Aven</title>
+<meta name="description" content="Une application gratuite qui vous guide pas à pas pour dessiner les paysages emblématiques de Pont-Aven. Pas besoin de savoir dessiner.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --teal: #1D9E75;
+  --teal-dark: #0F6E56;
+  --teal-light: #E1F5EE;
+  --teal-mid: #5DCAA5;
+  --cream: #FAF8F4;
+  --ink: #1C1C1A;
+  --ink-soft: #4A4A46;
+  --ink-muted: #8A8A84;
+  --border: rgba(28,28,26,.1);
+  --serif: 'Playfair Display', Georgia, serif;
+  --sans: 'DM Sans', system-ui, sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--sans);
+  background: var(--cream);
+  color: var(--ink);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 50% at 80% 20%, rgba(29,158,117,.08) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 60% at 10% 80%, rgba(29,158,117,.05) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.grain {
+  position: fixed;
+  inset: 0;
+  opacity: .025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px;
+  pointer-events: none;
+  z-index: 100;
+}
+
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem 2.5rem;
+  position: relative;
+  z-index: 10;
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.logo-mark {
+  width: 36px;
+  height: 36px;
+  background: var(--teal);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-name {
+  font-family: var(--serif);
+  font-size: 1.1rem;
+  color: var(--ink);
+  line-height: 1.2;
+}
+
+.nav-name span {
+  display: block;
+  font-size: .65rem;
+  font-family: var(--sans);
+  font-weight: 400;
+  color: var(--ink-muted);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.nav-cta {
+  background: var(--teal);
+  color: white;
+  border: none;
+  padding: .6rem 1.4rem;
+  border-radius: 99px;
+  font-family: var(--sans);
+  font-size: .85rem;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background .2s, transform .15s;
+}
+
+.nav-cta:hover { background: var(--teal-dark); transform: translateY(-1px); }
+
+.hero-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem 1.5rem 0;
+  position: relative;
+  z-index: 5;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--teal-light);
+  color: var(--teal-dark);
+  font-size: .75rem;
+  font-weight: 500;
+  padding: .35rem 1rem;
+  border-radius: 99px;
+  margin-bottom: 1.5rem;
+  letter-spacing: .03em;
+  animation: fadeUp .6s ease both;
+}
+
+.hero-badge::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--teal);
+}
+
+h1 {
+  font-family: var(--serif);
+  font-size: clamp(2.4rem, 6vw, 4.5rem);
+  line-height: 1.1;
+  color: var(--ink);
+  max-width: 760px;
+  margin-bottom: 1.25rem;
+  animation: fadeUp .6s .1s ease both;
+}
+
+h1 em {
+  font-style: italic;
+  color: var(--teal);
+}
+
+.hero-sub {
+  font-size: clamp(1rem, 2vw, 1.15rem);
+  color: var(--ink-soft);
+  max-width: 520px;
+  line-height: 1.7;
+  margin-bottom: 2.5rem;
+  font-weight: 300;
+  animation: fadeUp .6s .2s ease both;
+}
+
+.hero-form {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+  max-width: 440px;
+  animation: fadeUp .6s .3s ease both;
+}
+
+.hero-form input {
+  flex: 1;
+  padding: .85rem 1.2rem;
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  font-family: var(--sans);
+  font-size: .95rem;
+  background: white;
+  color: var(--ink);
+  outline: none;
+  transition: border-color .2s;
+}
+
+.hero-form input:focus { border-color: var(--teal); }
+.hero-form input::placeholder { color: var(--ink-muted); }
+
+.hero-form button {
+  padding: .85rem 1.5rem;
+  background: var(--teal);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-family: var(--sans);
+  font-size: .95rem;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background .2s, transform .15s;
+}
+
+.hero-form button:hover { background: var(--teal-dark); transform: translateY(-1px); }
+.hero-form button:active { transform: translateY(0); }
+
+.hero-note {
+  font-size: .75rem;
+  color: var(--ink-muted);
+  margin-top: .75rem;
+  animation: fadeUp .6s .35s ease both;
+}
+
+.hero-visual {
+  display: flex;
+  justify-content: center;
+  padding: 3rem 1.5rem 0;
+  position: relative;
+  z-index: 5;
+  animation: fadeUp .7s .4s ease both;
+}
+
+.phone-mockup {
+  width: 260px;
+  background: white;
+  border-radius: 32px;
+  border: 6px solid #1C1C1A;
+  overflow: hidden;
+  position: relative;
+}
+
+.pm-notch {
+  height: 28px;
+  background: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pm-notch-inner {
+  width: 60px;
+  height: 14px;
+  background: #0a0a0a;
+  border-radius: 99px;
+}
+
+.pm-screen {
+  background: #1D9E75;
+  padding: 16px;
+}
+
+.pm-spot-label {
+  font-size: 9px;
+  color: #9FE1CB;
+  letter-spacing: .05em;
+  margin-bottom: 3px;
+  font-family: var(--sans);
+}
+
+.pm-spot-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: white;
+  font-family: var(--sans);
+  margin-bottom: 10px;
+}
+
+.pm-prog {
+  height: 3px;
+  background: rgba(255,255,255,.25);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.pm-prog-fill {
+  width: 66%;
+  height: 100%;
+  background: white;
+  border-radius: 99px;
+}
+
+.pm-body {
+  padding: 12px;
+  background: #F7F6F2;
+}
+
+.pm-illus {
+  height: 80px;
+  background: white;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+  border: 1px solid rgba(0,0,0,.06);
+}
+
+.pm-card {
+  background: white;
+  border-radius: 10px;
+  padding: 10px;
+  border: 1px solid rgba(0,0,0,.06);
+}
+
+.pm-step-num {
+  font-size: 8px;
+  color: #8A8A84;
+  letter-spacing: .04em;
+  margin-bottom: 4px;
+  font-family: var(--sans);
+  text-transform: uppercase;
+}
+
+.pm-step-text {
+  font-size: 10px;
+  color: #1C1C1A;
+  line-height: 1.5;
+  font-family: var(--sans);
+}
+
+.pm-tip {
+  font-size: 9px;
+  color: #4A4A46;
+  line-height: 1.4;
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 1px solid rgba(0,0,0,.06);
+  font-family: var(--sans);
+}
+
+.pm-footer {
+  padding: 10px 12px;
+  background: white;
+  display: flex;
+  justify-content: flex-end;
+  border-top: 1px solid rgba(0,0,0,.06);
+}
+
+.pm-btn {
+  background: #1D9E75;
+  color: white;
+  font-size: 10px;
+  font-weight: 500;
+  padding: 7px 14px;
+  border-radius: 8px;
+  font-family: var(--sans);
+}
+
+/* ── PROOF ── */
+.proof {
+  background: white;
+  padding: 1.5rem 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2.5rem;
+  flex-wrap: wrap;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.proof-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: .85rem;
+  color: var(--ink-soft);
+}
+
+.proof-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--teal);
+  flex-shrink: 0;
+}
+
+/* ── HOW ── */
+.section {
+  padding: 5rem 1.5rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.section-tag {
+  font-size: .75rem;
+  font-weight: 500;
+  color: var(--teal);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  margin-bottom: .75rem;
+}
+
+h2 {
+  font-family: var(--serif);
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  line-height: 1.2;
+  color: var(--ink);
+  margin-bottom: 1rem;
+}
+
+h2 em { font-style: italic; color: var(--teal); }
+
+.section-sub {
+  font-size: 1.05rem;
+  color: var(--ink-soft);
+  line-height: 1.7;
+  max-width: 560px;
+  font-weight: 300;
+  margin-bottom: 3rem;
+}
+
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+}
+
+.step-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 1.75rem;
+  position: relative;
+  transition: transform .2s, border-color .2s;
+}
+
+.step-card:hover { transform: translateY(-3px); border-color: rgba(29,158,117,.3); }
+
+.step-num-badge {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--teal-light);
+  color: var(--teal-dark);
+  font-size: .8rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.step-card h3 {
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  color: var(--ink);
+  margin-bottom: .5rem;
+}
+
+.step-card p {
+  font-size: .9rem;
+  color: var(--ink-soft);
+  line-height: 1.6;
+  font-weight: 300;
+}
+
+/* ── SPOTS ── */
+.spots-section {
+  background: white;
+  padding: 5rem 1.5rem;
+}
+
+.spots-inner {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.spots-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1rem;
+  margin-top: 2.5rem;
+}
+
+.spot-card {
+  background: var(--cream);
+  border-radius: 16px;
+  padding: 1.25rem;
+  border: 1px solid var(--border);
+  transition: transform .2s;
+}
+
+.spot-card:hover { transform: translateY(-2px); }
+
+.spot-num {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--teal);
+  color: white;
+  font-size: .75rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: .75rem;
+}
+
+.spot-card h4 {
+  font-family: var(--serif);
+  font-size: .95rem;
+  color: var(--ink);
+  margin-bottom: .3rem;
+}
+
+.spot-card p {
+  font-size: .8rem;
+  color: var(--ink-muted);
+  line-height: 1.5;
+}
+
+/* ── ABOUT ── */
+.about-section {
+  padding: 5rem 1.5rem;
+  max-width: 900px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+@media (max-width: 640px) {
+  .about-section { grid-template-columns: 1fr; gap: 2rem; }
+  nav { padding: 1.25rem 1.25rem; }
+  .nav-name { display: none; }
+  .hero-form { flex-direction: column; }
+  .proof { gap: 1rem; padding: 1.25rem; }
+  .about-section { padding: 3rem 1.5rem; }
+  .spots-section { padding: 3rem 1.5rem; }
+  .section { padding: 3rem 1.5rem; }
+}
+
+.about-text .section-tag { margin-bottom: .5rem; }
+
+.about-quote {
+  font-family: var(--serif);
+  font-size: 1.3rem;
+  font-style: italic;
+  color: var(--ink);
+  line-height: 1.5;
+  margin-bottom: 1.25rem;
+  padding-left: 1.25rem;
+  border-left: 3px solid var(--teal);
+}
+
+.about-body {
+  font-size: .95rem;
+  color: var(--ink-soft);
+  line-height: 1.7;
+  font-weight: 300;
+  margin-bottom: 1rem;
+}
+
+.about-link {
+  color: var(--teal);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: .9rem;
+}
+
+.about-link:hover { text-decoration: underline; }
+
+.about-card {
+  background: var(--teal);
+  border-radius: 24px;
+  padding: 2rem;
+  color: white;
+}
+
+.about-card-title {
+  font-family: var(--serif);
+  font-size: 1.4rem;
+  margin-bottom: .75rem;
+  line-height: 1.3;
+}
+
+.about-card-body {
+  font-size: .9rem;
+  line-height: 1.6;
+  opacity: .85;
+  margin-bottom: 1.5rem;
+  font-weight: 300;
+}
+
+.about-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .75rem;
+}
+
+.about-stat {
+  background: rgba(255,255,255,.15);
+  border-radius: 12px;
+  padding: .75rem;
+}
+
+.about-stat-val {
+  font-size: 1.4rem;
+  font-weight: 500;
+  font-family: var(--serif);
+}
+
+.about-stat-lbl {
+  font-size: .75rem;
+  opacity: .75;
+  margin-top: 2px;
+}
+
+/* ── CTA FINAL ── */
+.cta-section {
+  background: var(--ink);
+  padding: 6rem 1.5rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 60% 80% at 50% 50%, rgba(29,158,117,.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.cta-section h2 {
+  color: white;
+  max-width: 600px;
+  margin: 0 auto 1rem;
+  position: relative;
+}
+
+.cta-section .section-tag { color: var(--teal-mid); }
+
+.cta-sub {
+  font-size: 1rem;
+  color: rgba(255,255,255,.6);
+  max-width: 420px;
+  margin: 0 auto 2.5rem;
+  line-height: 1.7;
+  font-weight: 300;
+}
+
+.cta-form {
+  display: flex;
+  gap: 8px;
+  max-width: 420px;
+  margin: 0 auto 1rem;
+}
+
+.cta-form input {
+  flex: 1;
+  padding: .85rem 1.2rem;
+  border: 1.5px solid rgba(255,255,255,.15);
+  border-radius: 12px;
+  background: rgba(255,255,255,.08);
+  color: white;
+  font-family: var(--sans);
+  font-size: .95rem;
+  outline: none;
+  transition: border-color .2s;
+}
+
+.cta-form input:focus { border-color: var(--teal); }
+.cta-form input::placeholder { color: rgba(255,255,255,.35); }
+
+.cta-form button {
+  padding: .85rem 1.5rem;
+  background: var(--teal);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-family: var(--sans);
+  font-size: .95rem;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background .2s;
+}
+
+.cta-form button:hover { background: var(--teal-dark); }
+
+.cta-note {
+  font-size: .75rem;
+  color: rgba(255,255,255,.35);
+  position: relative;
+}
+
+/* ── FOOTER ── */
+footer {
+  background: var(--ink);
+  border-top: 1px solid rgba(255,255,255,.06);
+  padding: 2rem 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: gap;
+  gap: 1rem;
+}
+
+.footer-left {
+  font-size: .8rem;
+  color: rgba(255,255,255,.35);
+  line-height: 1.6;
+}
+
+.footer-left a {
+  color: rgba(255,255,255,.55);
+  text-decoration: none;
+}
+
+.footer-left a:hover { color: var(--teal-mid); }
+
+/* ── SUCCESS ── */
+.success-msg {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  background: var(--teal-light);
+  color: var(--teal-dark);
+  padding: .75rem 1.25rem;
+  border-radius: 12px;
+  font-size: .9rem;
+  font-weight: 500;
+  max-width: 440px;
+  margin: 0 auto;
+}
+
+.success-msg.show { display: flex; }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity .6s ease, transform .6s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+</style>
+</head>
+<body>
+
+<div class="grain"></div>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">
+    <div class="logo-mark">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+        <path d="M10 2L12.2 8H18L13.4 11.6L15.2 18L10 14.6L4.8 18L6.6 11.6L2 8H7.8Z" fill="white"/>
+      </svg>
+    </div>
+    <div class="nav-name">
+      Croquis en Balade
+      <span>Pont-Aven, Ecole d'Art · 5 place de l'Église</span>
+    </div>
+  </a>
+  <a href="#inscrire" class="nav-cta">Je m'inscris</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div></div>
+  <div class="hero-content">
+    <div class="hero-badge">Pont-Aven · Cité des Peintres · Lancement été 2026</div>
+    <h1>Apprendre et comprendre<br>le dessin, <em>face au monde réel !</em></h1>
+    <p class="hero-sub">Une application gratuite qui vous guide pas à pas pour croquer les paysages emblématiques de Pont-Aven — sur les traces de Gauguin. Pas besoin de talent, juste d'un crayon.</p>
+    <div class="hero-form" id="inscrire">
+      <input type="email" id="email-hero" placeholder="Votre adresse email" autocomplete="email">
+      <button onclick="subscribe('email-hero', 'success-hero')">Me prévenir</button>
+    </div>
+    <div class="success-msg" id="success-hero">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8l4 4 6-6" stroke="#0F6E56" stroke-width="1.8" stroke-linecap="round"/></svg>
+      Parfait ! Vous serez parmi les premiers prévenus.
+    </div>
+    <p class="hero-note">Gratuit · Aucun compte requis · Juste un crayon et du papier</p>
+  </div>
+
+  <div class="hero-visual">
+    <div class="phone-mockup">
+      <div class="pm-notch"><div class="pm-notch-inner"></div></div>
+      <div class="pm-screen">
+        <div class="pm-spot-label">SPOT 2 SUR 5 · LES MOULINS DE L'AVEN</div>
+        <div class="pm-spot-name">Tracer les grandes lignes</div>
+        <div class="pm-prog"><div class="pm-prog-fill"></div></div>
+      </div>
+      <div class="pm-body">
+        <div class="pm-illus">
+          <svg width="140" height="68" viewBox="0 0 140 68" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <line x1="8" y1="44" x2="132" y2="44" stroke="#1D9E75" stroke-width="1.5"/>
+            <line x1="48" y1="44" x2="48" y2="14" stroke="#4A4A46" stroke-width="1.5"/>
+            <line x1="88" y1="44" x2="88" y2="20" stroke="#4A4A46" stroke-width="1.5"/>
+            <polygon points="48,14 68,4 88,14" stroke="#4A4A46" stroke-width="1.5" fill="none"/>
+            <line x1="25" y1="44" x2="48" y2="14" stroke="#B4B2A9" stroke-width="1" stroke-dasharray="3,3"/>
+            <line x1="111" y1="44" x2="88" y2="20" stroke="#B4B2A9" stroke-width="1" stroke-dasharray="3,3"/>
+            <path d="M8,52 Q40,47 70,51 Q100,55 132,50" stroke="#9FE1CB" stroke-width="1.5" fill="none"/>
+            <path d="M8,58 Q35,55 70,57 Q105,59 132,56" stroke="#9FE1CB" stroke-width="1" fill="none"/>
+          </svg>
+        </div>
+        <div class="pm-card">
+          <div class="pm-step-num">Étape 2 sur 3</div>
+          <div class="pm-step-text">Tracez d'abord la ligne de l'eau, puis la silhouette du moulin. Ne levez pas trop vite le crayon.</div>
+          <div class="pm-tip">Tenez le crayon à mi-longueur pour un trait plus libre.</div>
+        </div>
+      </div>
+      <div class="pm-footer">
+        <div class="pm-btn">Étape suivante</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROOF BAR -->
+<div class="proof">
+  <div class="proof-item"><div class="proof-dot"></div>100 % gratuit</div>
+  <div class="proof-item"><div class="proof-dot"></div>Pas besoin de savoir dessiner</div>
+  <div class="proof-item"><div class="proof-dot"></div>5 spots à Pont-Aven</div>
+  <div class="proof-item"><div class="proof-dot"></div>Créé par un artiste local</div>
+  <div class="proof-item"><div class="proof-dot"></div>Sur les traces de Gauguin</div>
+</div>
+
+<!-- HOW IT WORKS -->
+<div class="section reveal">
+  <div class="section-tag">Comment ça marche</div>
+  <h2>Simple comme<br><em>un trait de crayon</em></h2>
+  <p class="section-sub">Pas de cours magistral, pas de théorie. Vous êtes devant le paysage, l'app vous guide, vous dessinez.</p>
+  <div class="steps-grid">
+    <div class="step-card">
+      <div class="step-num-badge">1</div>
+      <h3>Choisissez un spot</h3>
+      <p>L'app vous indique où vous placer pour avoir le meilleur angle de vue sur chaque lieu emblématique de Pont-Aven.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num-badge">2</div>
+      <h3>Observez avant de dessiner</h3>
+      <p>L'artiste vous guide pour vraiment regarder ce que vous avez devant vous — lumière, formes, proportions.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num-badge">3</div>
+      <h3>Tracez étape par étape</h3>
+      <p>3 étapes simples par spot : les grandes lignes, la structure, puis les détails qui donnent vie au croquis.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num-badge">4</div>
+      <h3>Repartez avec votre carnet</h3>
+      <p>5 croquis originaux, faits de votre main, depuis les mêmes lieux qui ont inspiré Gauguin et l'École de Pont-Aven.</p>
+    </div>
+  </div>
+</div>
+
+<!-- SPOTS -->
+<section class="spots-section reveal">
+  <div class="spots-inner">
+    <div class="section-tag">Le parcours</div>
+    <h2>Sur les traces<br><em>de Gauguin</em></h2>
+    <p class="section-sub">5 spots emblématiques de Pont-Aven. Une balade de 2 heures. Un carnet de croquis à rapporter chez vous.</p>
+    <div class="spots-grid">
+      <div class="spot-card">
+        <div class="spot-num">1</div>
+        <h4>Le port de Pont-Aven</h4>
+        <p>Reflets et bateaux sur l'Aven</p>
+      </div>
+      <div class="spot-card">
+        <div class="spot-num">2</div>
+        <h4>Les moulins de l'Aven</h4>
+        <p>Architecture et rochers chaotiques</p>
+      </div>
+      <div class="spot-card">
+        <div class="spot-num">3</div>
+        <h4>Le Bois d'Amour</h4>
+        <p>Lumière filtrée, sous-bois</p>
+      </div>
+      <div class="spot-card">
+        <div class="spot-num">4</div>
+        <h4>Chapelle de Trémalo</h4>
+        <p>Le Christ Jaune de Gauguin</p>
+      </div>
+      <div class="spot-card">
+        <div class="spot-num">5</div>
+        <h4>Promenade Xavier-Grall</h4>
+        <p>Quais fleuris et ponts de pierre</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="reveal">
+  <div class="about-section">
+    <div class="about-text">
+      <div class="section-tag">Qui sommes-nous</div>
+      <blockquote class="about-quote">"J'ai créé ce parcours depuis les lieux que je dessine moi-même depuis 10 ans."</blockquote>
+      <p style="font-size:.85rem;color:var(--ink-muted);margin-bottom:1.25rem;font-style:normal;">— David Cardinal, artiste et fondateur de Pont-Aven, Ecole d'Art</p>
+      <p class="about-body">Pont-Aven, Ecole d'Art propose des cours de dessin et d'arts plastiques pour enfants, adolescents et adultes depuis 2015, au coeur de la cité des peintres.</p>
+      <p class="about-body">Cette application est une extension naturelle de notre pédagogie : apprendre à voir avant d'apprendre à dessiner, sur le terrain, devant le vrai paysage.</p>
+      <a href="https://www.ecoledepontaven.fr" target="_blank" class="about-link">Visiter ecoledepontaven.fr →</a>
+    </div>
+    <div class="about-card">
+      <div class="about-card-title">Envie d'aller plus loin ?</div>
+      <div class="about-card-body">L'app vous donne le goût du dessin. Nos stages en extérieur vous donnent les clés pour progresser vraiment — en petit groupe de 10 personnes maximum, avec un artiste pédagogue.</div>
+      <div class="about-stats">
+        <div class="about-stat">
+          <div class="about-stat-val">10 ans</div>
+          <div class="about-stat-lbl">d'expérience pédagogique</div>
+        </div>
+        <div class="about-stat">
+          <div class="about-stat-val">10 pers.</div>
+          <div class="about-stat-lbl">max par stage</div>
+        </div>
+        <div class="about-stat">
+          <div class="about-stat-val">Tout</div>
+          <div class="about-stat-lbl">niveau accepté</div>
+        </div>
+        <div class="about-stat">
+          <div class="about-stat-val">Été</div>
+          <div class="about-stat-lbl">prochaines sessions</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="cta-section reveal">
+  <div class="section-tag">Lancement été 2026</div>
+  <h2>Soyez parmi<br><em>les premiers</em></h2>
+  <p class="cta-sub">L'application sera disponible gratuitement cet été à Pont-Aven. Laissez votre email pour être prévenu en premier.</p>
+  <div class="cta-form">
+    <input type="email" id="email-cta" placeholder="Votre adresse email" autocomplete="email">
+    <button onclick="subscribe('email-cta', 'success-cta')">Je m'inscris</button>
+  </div>
+  <div class="success-msg" id="success-cta" style="background:rgba(29,158,117,.2);color:#9FE1CB">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8l4 4 6-6" stroke="#9FE1CB" stroke-width="1.8" stroke-linecap="round"/></svg>
+    Parfait ! Vous serez parmi les premiers prévenus.
+  </div>
+  <p class="cta-note">Gratuit · Aucun spam · Désabonnement en un clic</p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-left">
+    © 2026 Pont-Aven, Ecole d'Art · 5 place de l'Église, Pont-Aven<br>
+    <a href="https://www.ecoledepontaven.fr" target="_blank">www.ecoledepontaven.fr</a>
+  </div>
+  <div style="font-size:.8rem;color:rgba(255,255,255,.25)">Croquis en Balade</div>
+</footer>
+
+<script>
+function subscribe(inputId, successId) {
+  const input = document.getElementById(inputId);
+  const success = document.getElementById(successId);
+  const email = input.value.trim();
+  if (!email || !email.includes('@')) {
+    input.style.borderColor = '#E24B4A';
+    input.focus();
+    setTimeout(() => input.style.borderColor = '', 1500);
+    return;
+  }
+  const form = input.closest('.hero-form, .cta-form');
+  if (form) form.style.display = 'none';
+  success.classList.add('show');
+  console.log('Email inscrit :', email);
+}
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+</script>
+</body>
+</html>
