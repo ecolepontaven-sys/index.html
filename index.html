@@ -974,9 +974,9 @@ footer {
 </footer>
 
 <script>
+const GFORM = 'https://docs.google.com/forms/d/e/1FAIpQLSd7o07TO8FOdNdTj-tzseVIosnawy8VeWvk5CRiktgychrB1g/viewform?usp=publish-editor';
 function subscribe(inputId, successId) {
   const input = document.getElementById(inputId);
-  const success = document.getElementById(successId);
   const email = input.value.trim();
   if (!email || !email.includes('@')) {
     input.style.borderColor = '#E24B4A';
@@ -984,10 +984,11 @@ function subscribe(inputId, successId) {
     setTimeout(() => input.style.borderColor = '', 1500);
     return;
   }
+  window.open(GFORM, '_blank');
   const form = input.closest('.hero-form, .cta-form');
   if (form) form.style.display = 'none';
-  success.classList.add('show');
-  console.log('Email inscrit :', email);
+  const success = document.getElementById(successId);
+  if (success) success.classList.add('show');
 }
 
 const observer = new IntersectionObserver((entries) => {
